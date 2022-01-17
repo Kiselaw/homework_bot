@@ -145,7 +145,7 @@ def main():
         except Exception as error:
             errors = []
             message = f'Сбой в работе программы: {error}'
-            if message not in errors:
+            if message not in errors or errors is None:
                 errors.append(message)
                 logger.error(message, exc_info=True)
         else:
