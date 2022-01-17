@@ -42,9 +42,6 @@ formatter = logging.Formatter(
     '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 handler.setFormatter(formatter)
-telegram_handler = TelegramHandler(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID)
-logger.addHandler(telegram_handler)
-handler.setFormatter(formatter)
 file_handler = RotatingFileHandler(
     'YPHWbot_logs.log', maxBytes=50000000, backupCount=5
 )
@@ -135,6 +132,9 @@ def main():
     if not check_tokens():
         sys.exit()
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
+    telegram_handler = TelegramHandler(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID)
+    logger.addHandler(telegram_handler)
+    handler.setFormatter(formatter)
     current_timestamp = int(time.time() - 20 * SECONDS_IN_DAY)
     while True:
         try:
@@ -145,7 +145,7 @@ def main():
         except Exception as error:
             errors = []
             message = f'Сбой в работе программы: {error}'
-            if message not in errors or errors is None:
+            if message not in errors:
                 errors.append(message)
                 logger.error(message, exc_info=True)
         else:

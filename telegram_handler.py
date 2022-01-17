@@ -1,15 +1,13 @@
 from logging import StreamHandler
 
-import telegram
-
 
 class TelegramHandler(StreamHandler):
 
-    def __init__(self, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID):
+    def __init__(self, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, bot):
         StreamHandler.__init__(self)
         self.TELEGRAM_TOKEN = TELEGRAM_TOKEN
         self.TELEGRAM_CHAT_ID = TELEGRAM_CHAT_ID
-        self.bot = telegram.Bot(token=TELEGRAM_TOKEN)
+        self.bot = bot
 
     def emit(self, record):
         message = self.format(record)
