@@ -1,4 +1,4 @@
-class NoConnectionError(Exception):
+class FailedRequestError(Exception):
     pass
 
 

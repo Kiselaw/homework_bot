@@ -10,5 +10,8 @@ class TelegramHandler(StreamHandler):
         self.bot = bot
 
     def emit(self, record):
+        error = None
         message = self.format(record)
-        self.bot.send_message(self.TELEGRAM_CHAT_ID, message)
+        if message != error:
+            error = message
+            self.bot.send_message(self.TELEGRAM_CHAT_ID, message)
