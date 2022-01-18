@@ -5,11 +5,12 @@ import time
 from http import HTTPStatus
 from json import JSONDecodeError
 from logging.handlers import RotatingFileHandler
-from varname import nameof
+
 import requests
 import telegram
 from dotenv import load_dotenv
 from requests.exceptions import Timeout, TooManyRedirects
+from varname import nameof
 
 from custom_exceptions import (EmptyError, FailedJSONError, FailedRequestError,
                                MessageSendingError, NoKeyError, Not200Error,
