@@ -5,7 +5,7 @@ import time
 from http import HTTPStatus
 from json import JSONDecodeError
 from logging.handlers import RotatingFileHandler
-
+from varname import nameof
 import requests
 import telegram
 from dotenv import load_dotenv
@@ -24,12 +24,6 @@ DAYS = 20
 PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
-
-token_names = {
-    PRACTICUM_TOKEN: 'PRACTICUM_TOKEN',
-    TELEGRAM_TOKEN: 'TELEGRAM_TOKEN',
-    TELEGRAM_CHAT_ID: 'TELEGRAM_CHAT_ID'
-}
 
 RETRY_TIME = 600
 ENDPOINT = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
@@ -86,6 +80,7 @@ def get_api_answer(current_timestamp):
         response = response.json()
     except JSONDecodeError as error:
         raise FailedJSONError('Проблема при приобразовании из JSON') from error
+    return response
 
 
 def check_response(response):
@@ -130,8 +125,11 @@ def check_tokens():
     for token in token_list:
         if token is None:
             logging.critical(
-                f'Переменная окружения {token_names[token]} отсутствует'
+                f'Переменная окружения {nameof(token)} отсутствует'
             )
+            # Со вловарем пытался, но не работает, если все None
+            # Тогда ведь по ключу все время будем получать имя одной переменной
+            # + тесты выдают KeyError: None
             return False
     return True
 

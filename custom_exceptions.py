@@ -20,3 +20,7 @@ class WrongDataTypeError(Exception):
 
 class MessageSendingError(Exception):
     pass
+
+
+class FailedJSONError(Exception):
+    pass
