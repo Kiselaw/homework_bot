@@ -9,8 +9,7 @@ from logging.handlers import RotatingFileHandler
 import requests
 import telegram
 from dotenv import load_dotenv
-from requests.exceptions import Timeout, TooManyRedirects
-from varname import nameof
+from requests.exceptions import RequestException
 
 from custom_exceptions import (EmptyError, FailedJSONError, FailedRequestError,
                                MessageSendingError, NoKeyError, Not200Error,
@@ -67,21 +66,16 @@ def get_api_answer(current_timestamp):
     params = {'from_date': timestamp}
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=params)
-    except ConnectionError as error:
-        raise FailedRequestError('Запрос не удался') from error
-    except Timeout as error:
-        raise FailedRequestError('Запрос не удался') from error
-    except TooManyRedirects as error:
+    except RequestException as error:
         raise FailedRequestError('Запрос не удался') from error
     if response.status_code != HTTPStatus.OK:
         raise Not200Error(
             f'Код ответа при запросе к API {response.status_code}'
         )
     try:
-        response = response.json()
+        return response.json()
     except JSONDecodeError as error:
-        raise FailedJSONError('Проблема при приобразовании из JSON') from error
-    return response
+        raise FailedJSONError('Проблема при преобразовании из JSON') from error
 
 
 def check_response(response):
@@ -122,15 +116,16 @@ def parse_status(homeworks):
 
 def check_tokens():
     """Проверка наличия всех необходимых токенов."""
-    token_list = [PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_TOKEN]
-    for token in token_list:
+    token_list = {
+        "PRACTICUM_TOKEN": PRACTICUM_TOKEN,
+        "TELEGRAM_TOKEN": TELEGRAM_TOKEN,
+        "TELEGRAM_CHAT_ID": TELEGRAM_CHAT_ID
+    }
+    for name, token in token_list.items():
         if token is None:
             logging.critical(
-                f'Переменная окружения {nameof(token)} отсутствует'
+                f'Переменная окружения {name} отсутствует'
             )
-            # Со вловарем пытался, но не работает, если все None
-            # Тогда ведь по ключу все время будем получать имя одной переменной
-            # + тесты выдают KeyError: None
             return False
     return True
 
@@ -138,7 +133,7 @@ def check_tokens():
 def main():
     """Основная логика работы бота."""
     if not check_tokens():
-        sys.exit()
+        sys.exit(1)
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     telegram_handler = TelegramHandler(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID)
     logger.addHandler(telegram_handler)
@@ -149,7 +144,7 @@ def main():
             response = get_api_answer(current_timestamp)
             homeworks = check_response(response)
             homework_status = parse_status(homeworks)
-            current_timestamp = response['current_date']
+            current_timestamp = response.get('current_date', current_timestamp)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             logger.error(message, exc_info=True)
