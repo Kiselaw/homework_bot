@@ -19,7 +19,7 @@ from telegram_handler import TelegramHandler
 load_dotenv()
 
 SECONDS_IN_DAY = 86400
-DAYS = 20
+DAYS = 2
 
 PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
@@ -134,8 +134,11 @@ def main():
     """Основная логика работы бота."""
     if not check_tokens():
         sys.exit(1)
+    error = []
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
-    telegram_handler = TelegramHandler(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID)
+    telegram_handler = TelegramHandler(
+        TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, bot, error
+    )
     logger.addHandler(telegram_handler)
     handler.setFormatter(formatter)
     current_timestamp = int(time.time() - DAYS * SECONDS_IN_DAY)
