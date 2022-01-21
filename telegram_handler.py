@@ -12,6 +12,6 @@ class TelegramHandler(StreamHandler):
 
     def emit(self, record):
         message = self.format(record)
-        if message not in self.error:
-            self.error.insert(0, message)
+        if message != self.error:
+            self.error = message
             self.bot.send_message(self.TELEGRAM_CHAT_ID, message)

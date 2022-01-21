@@ -134,7 +134,7 @@ def main():
     """Основная логика работы бота."""
     if not check_tokens():
         sys.exit(1)
-    error = []
+    error = None
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     telegram_handler = TelegramHandler(
         TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, bot, error
