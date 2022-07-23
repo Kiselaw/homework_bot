@@ -3,12 +3,12 @@ from logging import StreamHandler
 
 class TelegramHandler(StreamHandler):
 
-    def __init__(self, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, bot, error):
+    def __init__(self, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, bot):
         super().__init__(self)
         self.TELEGRAM_TOKEN = TELEGRAM_TOKEN
         self.TELEGRAM_CHAT_ID = TELEGRAM_CHAT_ID
         self.bot = bot
-        self.error = error
+        self.error = None
 
     def emit(self, record):
         message = self.format(record)
