@@ -18,7 +18,7 @@ This bot is designed to work specifically with my homework, so if you want to te
 
 - create your own bot via @botfather and get a token
 - receive your own token via [Yandex.Practicum](https://practicum.yandex.ru/) website (you have to be the student)
-- Put the data in the variables PRACTICUM_TOKEN, TELEGRAM_TOKEN and TELEGRAM_CHAT_ID
+- put the data in the variables PRACTICUM_TOKEN, TELEGRAM_TOKEN and TELEGRAM_CHAT_ID
 
 Clone the repository and go to it using the command line:
 
