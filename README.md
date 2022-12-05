@@ -66,32 +66,18 @@ Install dependencies from a file requirements.txt:
 pip install -r requirements.txt
 ```
 
-Make migrations:
-
-Windows: 
-
-```bash
-py manage.py migrate
-```
-
-macOS/Linux:
-
-```bash
-python3 manage.py migrate
-```
-
 Launch:
 
 Windows:
 
 ```bash
-py manage.py runserver
+py homework.py 
 ```
 
 macOS/Linux:
 
 ```bash
-python3 manage.py runserver
+python3 homework.py 
 ```
 
 ### License
