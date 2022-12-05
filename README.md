@@ -12,7 +12,7 @@ The bot can interact with the Yandex.Praсtiсum website API and the Telegram me
 
 ### Installation and launch
 
-IMPORTAT NOTE!
+IMPORTANT NOTE!
 
 This bot is designed to work specifically with my homework, so if you want to test the bot in practice, then you firtsly need to do the following:
 
